@@ -1,6 +1,6 @@
 <img src="./hamburger.png" width="500px"></img>
 
-## Hamburger module - Pytorch (wip)
+## Hamburger module - Pytorch
 
 Pytorch implementation of the hamburger module from the ICLR 2020 paper <a href="https://openreview.net/forum?id=1FvkSpWosOl">Is Attention Better Than Matrix Decomposition</a>. Specifically, it will contain the NMF-MU (nonnegative matrix factorization w/ multiplicative update) module sandwiched by linear projections.
 
