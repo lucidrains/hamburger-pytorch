@@ -2,7 +2,9 @@
 
 ## Hamburger module - Pytorch
 
-Pytorch implementation of the hamburger module from the ICLR 2020 paper <a href="https://openreview.net/forum?id=1FvkSpWosOl">Is Attention Better Than Matrix Decomposition</a>. Specifically, it will contain the NMF-MU (nonnegative matrix factorization w/ multiplicative update) module sandwiched by linear projections.
+Pytorch implementation of the hamburger module from the ICLR 2020 paper <a href="https://openreview.net/forum?id=1FvkSpWosOl">Is Attention Better Than Matrix Decomposition?</a>. Following Betteridge's law, the answer according to the paper is "No" for segmentation and GANs.
+
+This repository will contain the NMF-MU (nonnegative matrix factorization w/ multiplicative update) module sandwiched by linear projections.
 
 ## Install
 
@@ -27,7 +29,6 @@ x = torch.randn(1, 512, 32, 32)
 hamburger(x) + x # (1, 512, 1024)
 ```
 
-```
 ## Citations
 
 ```bibtex
