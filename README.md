@@ -24,7 +24,7 @@ hamburger = Hamburger(
 )
 
 x = torch.randn(1, 512, 32, 32)
-hamburger(x) # (1, 512, 1024)
+hamburger(x) + x # (1, 512, 1024)
 ```
 
 ```
