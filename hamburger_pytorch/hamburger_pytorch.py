@@ -2,7 +2,7 @@ import torch
 from torch import nn, einsum
 import torch.nn.functional as F
 from contextlib import contextmanager
-from einops import rearrange
+from einops import repeat, rearrange
 
 # helper fn
 
@@ -37,22 +37,26 @@ class NMF(nn.Module):
         self.C = nn.Parameter(C)
 
     def forward(self, x):
-        D, C = self.D, self.C
+        b, D, C = x.shape[0], self.D, self.C
 
         # x is made non-negative with relu as proposed in paper
         x = F.relu(x)
 
-        C_out = C
-        D_out = D
+        D = repeat(D, 'd r -> b d r', b = b)
+        C = repeat(C, 'r n -> b r n', b = b)
+
+        # transpose
+        t = lambda tensor: rearrange(tensor, 'b i j -> b j i')
 
         for k in reversed(range(self.K)):
             # only calculate gradients on the last step, per propose 'One-step Gradient'
             context = null_context if k == 0 else torch.no_grad
             with context():
-                C_out = C_out * ((D.t() @ x) / (D.t() @ D @ C))
-                D_out = D_out * ((x @ C.t()) / (D @ C @ C.t()))
+                C_new = C * ((t(D) @ x) / (t(D) @ D @ C))
+                D_new = D * ((x @ t(C)) / (D @ C @ t(C)))
+                C, D = C_new, D_new
 
-        return D_out @ C_out
+        return D @ C
 
 class Hamburger(nn.Module):
     def __init__(
