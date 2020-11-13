@@ -24,7 +24,8 @@ class NMF(nn.Module):
         dim,
         n,
         ratio = 8,
-        K = 6
+        K = 6,
+        eps = 2e-8
     ):
         super().__init__()
         r = dim // ratio
@@ -36,8 +37,10 @@ class NMF(nn.Module):
         self.D = nn.Parameter(D)
         self.C = nn.Parameter(C)
 
+        self.eps = eps
+
     def forward(self, x):
-        b, D, C = x.shape[0], self.D, self.C
+        b, D, C, eps = x.shape[0], self.D, self.C, self.eps
 
         # x is made non-negative with relu as proposed in paper
         x = F.relu(x)
@@ -52,8 +55,8 @@ class NMF(nn.Module):
             # only calculate gradients on the last step, per propose 'One-step Gradient'
             context = null_context if k == 0 else torch.no_grad
             with context():
-                C_new = C * ((t(D) @ x) / (t(D) @ D @ C))
-                D_new = D * ((x @ t(C)) / (D @ C @ t(C)))
+                C_new = C * ((t(D) @ x) / ((t(D) @ D @ C) + eps))
+                D_new = D * ((x @ t(C)) / ((D @ C @ t(C)) + eps))
                 C, D = C_new, D_new
 
         return D @ C
