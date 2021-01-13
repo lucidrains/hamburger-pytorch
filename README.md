@@ -8,6 +8,8 @@ Pytorch implementation of the hamburger module from the ICLR 2021 paper <a href=
 
 This repository will contain the NMF-MU (nonnegative matrix factorization w/ multiplicative update) module sandwiched by linear projections.
 
+Update: I tried this, but did not get better results than just using linear attention
+
 ## Install
 
 ```bash
